@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link href="Imagenes/logo.png" rel="shortcut icon" type="image/x-icon">
+  <link href="estilo.css" rel="stylesheet" type="text/css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiendita El Cornito</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #ffffff, #ffffff);
+      color: rgb(0, 0, 0);
+      padding-top: 130px;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+      transition: background 0.3s ease, padding 0.3s ease;
+      padding: 0.8rem 1.5rem;
+    }
+
+    header.scrolled {
+      background: rgba(0, 0, 0, 0.9);
+      padding: 0.4rem 1.5rem;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 1rem;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid white;
+      user-select: none;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    header.scrolled .logo-img {
+      width: 45px;
+      height: 45px;
+    }
+
+    .logo-text {
+      color: white;
+      font-size: 1.8rem;
+      font-weight: bold;
+      text-transform: uppercase;
+      transition: font-size 0.3s ease;
+      user-select: none;
+    }
+
+    header.scrolled .logo-text {
+      font-size: 1.3rem;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.6rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      position: relative;
+      z-index: 1100;
+     
+      
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: color 0.3s ease;
+      user-select: none;
+   
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: #7e7e7ea9;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: #7e7e7ea9;
+    }
+
+    /* Buscador */
+    .search-container {
+      position: relative;
+      display: flex;
+      align-items: center;
+      color: white;
+   
+      
+    }
+
+    .search-input {
+      padding: 5px 10px;
+      border-radius: 20px;
+      border: none;
+      outline: none;
+      width: 0;
+      opacity: 0;
+      transition: width 0.4s ease, opacity 0.4s ease;
+      font-size: 1rem;
+      margin-left: 5px;
+      background: white;
+      color: black;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+
+    .search-container.active .search-input {
+      width: 160px;
+      opacity: 1;
+    }
+
+    .search-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.3rem;
+      cursor: pointer;
+      transition: color 0.3s ease, transform 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      position: relative;
+      overflow: visible;
+      user-select: none;
+    }
+
+    /* Animación moderna para el botón de búsqueda */
+    .search-btn.animating {
+      animation: popScale 0.35s ease forwards;
+      color: #00e676;
+    }
+
+    .search-btn.rotated {
+      transform: rotate(20deg);
+      color: #00e676;
+    }
+
+    .search-btn:hover {
+      color: #00e676;
+      transform: scale(1.15);
+    }
+
+    @keyframes popScale {
+      0% {
+        transform: scale(1);
+        box-shadow: none;
+      }
+      50% {
+        transform: scale(1.3);
+        box-shadow: 0 0 8px #00e676;
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 4px #00e676;
+      }
+    }
+
+    /* Botón carrito y notificación */
+    .cart-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.8rem;
+      cursor: pointer;
+      position: relative;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease, transform 0.3s ease;
+      margin-right: 10px;
+      user-select: none;
+    }
+
+    .cart-btn:hover {
+      color: #00ff8080;
+      transform: scale(1.2);
+    }
+
+    .cart-btn.animate {
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: #00ff4c;
+      color: black;
+      font-weight: bold;
+      font-size: 0.75rem;
+      padding: 2px 6px;
+      border-radius: 50%;
+      user-select: none;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 65px;
+        right: 20px;
+        width: 80%;
+        max-width: 280px;
+        background: rgba(0, 0, 0, 0.95);
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+        z-index: 1099;
+        
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        margin: 0.6rem 0;
+        font-size: 1.05rem;
+      }
+
+      .search-container {
+        margin-top: 0.6rem;
+      }
+    }
+
+    /* Productos grid y estilos */
+    .productos-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .producto {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 1rem;
+      width: calc(25% - 1.5rem);
+      min-width: 200px;
+      max-width: 300px;
+      position: relative;
+      box-shadow: 0 2px 10px rgb(0, 0, 0);
+      flex-grow: 1;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: white;
+      text-align: center;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+    }
+
+    .producto:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+    }
+
+    .producto img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 0.5rem;
+      user-select: none;
+    }
+
+    .producto h2 {
+      margin: 0.5rem 0;
+      font-size: 1.4rem;
+      color: #000000;
+      font-weight: 700;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+    }
+
+    .producto button.add-to-cart {
+      margin-top: auto;
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #0000007c;
+      color: black;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+
+    .producto button.add-to-cart:hover {
+      background: #0202029f;
+    }
+
+    .agotado {
+      position: absolute;
+      top: 10px;
+      left: -40px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 50px;
+      transform: rotate(-45deg);
+      font-weight: bold;
+      text-transform: uppercase;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    #no-results {
+      margin: 2rem auto;
+      font-weight: bold;
+      color: white;
+      background: rgba(0,0,0,0.3);
+      padding: 1rem 2rem;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 300px;
+      display: none;
+    }
+
+    @media (max-width: 1024px) {
+      .producto {
+        width: calc(33.333% - 1.5rem);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .producto {
+        width: calc(50% - 1.5rem);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .producto {
+        width: 90%;
+      }
+    }
+
+    /* Carrito lateral */
+    #cartSidebar {
+      position: fixed;
+      top: 0;
+      right: -400px; /* oculto inicialmente */
+      width: 400px;
+      max-width: 90vw;
+      height: 700px;
+      background: white;
+      box-shadow: -4px 0 15px rgba(0,0,0,0.3);
+      padding: 1.5rem;
+      overflow-y: auto;
+      transition: right 0.3s ease;
+      z-index: 1500;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #cartSidebar.active {
+      right: 0;
+    }
+
+    #cartSidebar h2 {
+      margin-bottom: 1rem;
+      color: #03030388;
+      text-align: center;
+    }
+
+    #closeCartBtn {
+      align-self: flex-end;
+      background: #0a0c0b8a;
+      border: none;
+      color: black;
+      padding: 0.3rem 0.8rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 1rem;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+
+    #closeCartBtn:hover {
+      background: #0c110f79;
+    }
+
+    #cartItems {
+      flex-grow: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding: 0.5rem 0;
+      user-select: none;
+    }
+
+    .cart-item-info {
+      flex-grow: 1;
+      margin-right: 10px;
+    }
+
+    .cart-item-info strong {
+      display: block;
+      color: #333;
+    }
+
+    .cart-item-info span {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .remove-item-btn {
+      background: #ff5252;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      padding: 0.2rem 0.6rem;
+      font-weight: bold;
+      transition: background 0.3s ease;
+      user-select: none;
+    }
+
+    .remove-item-btn:hover {
+      background: #e04848;
+    }
+
+    /* Total del carrito */
+    #cartTotal {
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 0.6rem 0;
+      border-top: 2px solid #000000;
+      text-align: right;
+      color: #000000;
+      user-select: none;
+    }
+
+    /* Formulario en carrito */
+    #cartForm {
+      border-top: 1px solid #ccc;
+      padding-top: 1rem;
+    }
+
+    #cartForm label {
+      display: block;
+      margin-bottom: 0.3rem;
+      font-weight: 700;
+      color: #333;
+      user-select: none;
+    }
+
+    #cartForm input,
+    #cartForm textarea {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+      resize: vertical;
+    }
+
+    #sendOrderBtn {
+      background: #00e676;
+      color: black;
+      border: none;
+      padding: 0.7rem;
+      font-weight: 700;
+      border-radius: 12px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.1rem;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+
+    #sendOrderBtn:hover {
+      background: #00c85a;
+    }
+       #domicilioInfo {
+      background: #e0ffe0;
+      border: 2px solid #00c85a;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 0.5rem;
+      font-weight: 700;
+      color: #007a29;
+      text-align: center;
+      user-select: none;
+    }
+   
+
+  </style>
+</head>
+<body>
+
+  <header>
+   
+    <div class="header-container">
+      <div class="logo-container">
+        <img src="Imagenes/logo.png" alt="Logo" class="logo-img">
+        <span class="logo-text">Tiendita El Cornito</span>
+      </div>
+ 
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menú">☰</button>
+
+      <nav id="nav" class="nav-links" aria-label="Menú de navegación">
+         <a href="#" class="filter-link" data-category="todos"> Todos</a>
+        <a href="#" class="filter-link" data-category="chucherias"> Chucherías</a>
+        <a href="#" class="filter-link" data-category="aseo">Aseo</a>
+        <a href="#" class="filter-link" data-category="pastas"> Pastas</a>
+        <a href="#" class="filter-link" data-category="Embutidos"> Embutidos</a>
+        <a href="#" class="filter-link" data-category="liquidos"> Liquidos</a>
+        <a href="#" class="filter-link" data-category="cocina"> Cocina</a>
+        
+
+      </nav>
+      <div class="search-container" id="searchContainer">
+        <input type="text" class="search-input" id="searchInput" placeholder="Buscar..." aria-label="Buscar productos">
+        <button class="search-btn" id="searchBtn" aria-label="Abrir buscador">🔍</button>
+      </div>
+      <!-- Botón carrito con notificación -->
+ <button class="cart-btn" id="cartBtn" aria-label="Abrir carrito">
+  🛒
+              <span class="cart-count" id="cartCount" style="display:none;">0</span>
+</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="inicio" style="padding: 2rem; text-align: center; color: #333;">
+      <h1>Te damos la bienvenida a Tiendita El Cornito</h1>
+      <p>Pide Tranquilo... ¡Nosotros te lo llevamos!</p>
+    </section>
+<!-- Estado de la tienda centrado -->
+<div id="estado-tienda" style="
+  font-weight: bold;
+  font-size: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  width: 100%;
+  text-align: center;
+  margin: 20px 0;
+"></div>
+
+
+    <section id="productos" class="productos-grid">
+      <!-- Productos con botón agregar al carrito -->
+      <div class="producto" data-name="Chupachups" data-price="50" data-category="chucherias">
+        <img src="Imagenes/ChupaChupas.jpg" alt="Chupachups">
+        <h2>Chupachups <br>$50</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Galletas Monro" data-price="150" data-category="chucherias">
+        <img src="Imagenes/Monro.jpg" alt="Galletas Monro">
+        <h2>Galletas Monro <br>$150</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Galletas Golozetas" data-price="70" data-category="chucherias">
+        <img src="Imagenes/Golozetas.jpg" alt="Galletas Golozetas">
+        <h2>Galletas Golozetas <br>$70</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Delechitas" data-price="120" data-category="chucherias">
+        <img src="Imagenes/Delechitas.jpg" alt="Delechitas">
+        <h2>Delechitas <br>$40</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Galletas Ricco" data-price="150" data-category="chucherias">
+        <img src="Imagenes/Ricco.jpg" alt="Galletas Ricco">
+        <h2>Galletas Ricco <br>$150</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Refrescos" data-price="50" data-category="chucherias">
+        <img src="Imagenes/Refrescos.jpg" alt="Papas Ruffles">
+        <h2>Regrescos<br>$50</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Menta Plus" data-price="100" data-category="chucherias">
+        <img src="Imagenes/Menta Plus.jpg" alt="Menta Plus">
+        <h2>Menta Plus<br>$100</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Alokados" data-price="10" data-category="chucherias">
+        <img src="Imagenes/Alocados.jpg" alt="Alokados">
+        <h2>Alokados Varios Sabores<br>$10</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Minnes" data-price="100" data-category="chucherias">
+        <img src="Imagenes/Minnes.jpg" alt="Minnes">
+        <h2>Minnes<br>$100</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Leche Condensada" data-price="500"data-category="chucherias">
+        <img src="Imagenes/Leche Condensada.jpg" alt="Leche Condensada">
+        <h2>Leche Condensada <br>$500</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Gelatina" data-price="200" data-category="chucherias">
+        <img src="Imagenes/Gelatina.jpg" alt="Gelatina">
+        <h2>Gelatina<br>$200</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Malta" data-price="250" data-category="liquidos" >
+        <img src="Imagenes/Malta.jpg" alt="Malta">
+        <h2>Malta <br>$250</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Jugos" data-price="250" data-category="liquidos" >
+        <img src="Imagenes/Jugos.png" alt="Jugos">
+        <h2>Jugos <br>$160</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Cerveza Parranda" data-price="200"  data-category="liquidos">
+        <img src="Imagenes/Parranda.jpg" alt="Cerveza Parranda">
+        <h2>Cerveza Parranda <br>$200</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Refresco Lata Santa Cola" data-price="200"  data-category="liquidos">
+        <img src="Imagenes/Refresco Cola.jpg" alt="Refresco Lata Santa Cola">
+        <h2>Refresco Lata Santa Cola<br>$200</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Sasón Goya" data-price="70"  data-category="cocina">
+        <img src="Imagenes/Golla.jpg" alt="Sasón Goya">
+        <h2>Sasón Goya<br>$70</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Pastilla de Pollo" data-price="30"  data-category="cocina">
+        <img src="Imagenes/Pastillitas De Pollo.jpg" alt="Pastilla de Pollo">
+        <h2>Pastilla de Pollo<br>$30</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Aceite" data-price="880"  data-category="cocina">
+        <img src="Imagenes/Aceite.jpg" alt="Aceite">
+        <h2>Aceite<br>$880</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Jabon Doxa" data-price="170" data-category="aseo">
+        <img src="Imagenes/Jabon.jpg" alt="Jabon Doxa">
+        <h2>Jabon Doxa<br>$170</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Pasta Dental" data-price="450"data-category="aseo">
+        <img src="Imagenes/Pasta.jpg" alt="Pasta Dental">
+        <h2>Pasta Dental<br>$450</h2>
+        
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Detergente" data-price="500" data-category="aseo">
+        <img src="Imagenes/Detergente.jpg" alt="Detergente">
+        <h2>Detergente 500gr<br>$500</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Espaguetis" data-price="340"data-category="pastas">
+        <img src="Imagenes/Espagueti.jpg" alt="Espaguetis">
+        <h2>Espaguetis<br>$340</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+
+      <div class="producto" data-name="Codito" data-price="340" data-category="pastas">
+        <img src="Imagenes/Coditos.jpg" alt="Codito">
+        <h2>Codito<br>$340</h2>
+        <button class="add-to-cart">Agregar al carrito</button>
+      </div>
+    </section>
+
+    
+  </main>
+
+  <!-- Carrito lateral -->
+  <aside id="cartSidebar" aria-label="Carrito de compras">
+    <button id="closeCartBtn" aria-label="Cerrar carrito">Cerrar ✖</button>
+    <h2>Tu carrito</h2>
+   <div id="cartItems" aria-live="polite" aria-atomic="true">
+      <!-- Productos agregados -->
+    </div>
+    <div id="cartTotal">Total: $0</div>
+
+    <form id="cartForm">
+      <label for="nombre">Nombre completo:</label>
+      <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo" />
+
+      <label for="telefono">Teléfono:</label>
+      <input type="tel" id="telefono" name="telefono" required placeholder="Tu número de teléfono" pattern="[0-9\s\-+]{7,15}" />
+
+      <label for="direccion">Dirección:</label>
+      <textarea id="direccion" name="direccion" rows="3" required placeholder="Dirección de entrega y punto de referencia"></textarea>
+
+      <button type="submit" id="sendOrderBtn">Enviar pedido por WhatsApp</button>
+    </form>
+    <div id="domicilioInfo">
+      El domicilio será en todo El Cornito hasta La Aldea por tan solo $50.
+    </div>
+
+  </aside>
+
+  <script>
+    // Menú toggle móvil
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('nav');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+    });
+
+    // Efecto scroll para header
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 60) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // Buscador animación
+    const searchBtn = document.getElementById('searchBtn');
+    const searchContainer = document.getElementById('searchContainer');
+    const searchInput = document.getElementById('searchInput');
+     
+    searchBtn.addEventListener('click', () => {
+      if (!searchContainer.classList.contains('active')) {
+        searchContainer.classList.add('active');
+        searchInput.focus();
+        searchBtn.classList.add('animating');
+        setTimeout(() => searchBtn.classList.remove('animating'), 350);
+      } else if(searchInput.value.trim() === '') {
+        searchContainer.classList.remove('active');
+      }
+    });
+
+    // Cerrar buscador si clic afuera
+    document.addEventListener('click', (e) => {
+      if (!searchContainer.contains(e.target) && searchContainer.classList.contains('active')) {
+        if (searchInput.value.trim() === '') {
+          searchContainer.classList.remove('active');
+        }
+      }
+    });
+
+    // Productos y carrito
+    const productos = document.querySelectorAll('.producto');
+    const cartSidebar = document.getElementById('cartSidebar');
+    const cartBtn = document.getElementById('cartBtn');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartCount = document.getElementById('cartCount');
+    const cartTotal = document.getElementById('cartTotal');
+
+    let carrito = [];
+
+    // Actualiza la notificación y animación del botón carrito
+    function actualizarCarritoUI() {
+      const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+      if(totalItems > 0) {
+        cartCount.style.display = 'inline-block';
+        cartCount.textContent = totalItems;
+        cartBtn.classList.add('animate');
+        setTimeout(() => cartBtn.classList.remove('animate'), 500);
+      } else {
+        cartCount.style.display = 'none';
+      }
+      // Actualizar total
+      const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+      cartTotal.textContent = `Total: $${total}`;
+    }
+
+    // Renderiza productos en el carrito
+    function renderizarCarrito() {
+      cartItemsContainer.innerHTML = '';
+      if (carrito.length === 0) {
+        cartItemsContainer.innerHTML = '<p>Tu carrito está vacío.</p>';
+        cartTotal.textContent = 'Total: $0';
+        return;
+      }
+
+      carrito.forEach((producto, index) => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+
+        div.innerHTML = `
+          <div class="cart-item-info">
+            <strong>${producto.nombre}</strong>
+            <span>$${producto.precio} x ${producto.cantidad} = $${producto.precio * producto.cantidad}</span>
+          </div>
+          <button class="remove-item-btn" aria-label="Eliminar ${producto.nombre}" data-index="${index}">✖</button>
+        `;
+
+        cartItemsContainer.appendChild(div);
+      });
+
+      // Añadir eventos para eliminar
+      const botonesEliminar = cartItemsContainer.querySelectorAll('.remove-item-btn');
+      botonesEliminar.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const idx = e.target.getAttribute('data-index');
+          carrito.splice(idx, 1);
+          renderizarCarrito();
+          actualizarCarritoUI();
+        });
+      });
+    }
+
+    // Agregar producto al carrito
+    productos.forEach(producto => {
+      const btn = producto.querySelector('.add-to-cart');
+      btn.addEventListener('click', () => {
+        const nombre = producto.getAttribute('data-name');
+        const precio = Number(producto.getAttribute('data-price'));
+        const productoExistente = carrito.find(item => item.nombre === nombre);
+
+        if (productoExistente) {
+          productoExistente.cantidad++;
+        } else {
+          carrito.push({ nombre, precio, cantidad: 1 });
+        }
+        renderizarCarrito();
+        actualizarCarritoUI();
+        abrirCarrito(none);
+      });
+    });
+
+    // Abrir carrito
+    function abrirCarrito() {
+      cartSidebar.classList.add('active');
+    }
+
+    // Cerrar carrito
+    closeCartBtn.addEventListener('click', () => {
+      cartSidebar.classList.remove('active');
+    });
+
+    // Botón carrito abre/cierra carrito
+    cartBtn.addEventListener('click', () => {
+      if(cartSidebar.classList.contains('active')) {
+        cartSidebar.classList.remove('active');
+      } else {
+        abrirCarrito();
+      }
+    });
+
+    // Enviar pedido por WhatsApp
+    const cartForm = document.getElementById('cartForm');
+    cartForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (carrito.length === 0) {
+        alert('El carrito está vacío.');
+        return;
+      }
+
+      const nombre = document.getElementById('nombre').value.trim();
+      const telefono = document.getElementById('telefono').value.trim();
+      const direccion = document.getElementById('direccion').value.trim();
+
+      if (!nombre || !telefono || !direccion) {
+        alert('Por favor completa todos los campos.');
+        return;
+      }
+
+      // Crear resumen pedido
+      let mensaje = `*Pedido desde Tiendita El Cornito*%0A%0A`;
+      carrito.forEach(item => {
+        mensaje += `${item.nombre} x${item.cantidad} = $${item.precio * item.cantidad}%0A`;
+      });
+      const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+      mensaje += `%0ATotal: $${total}%0A%0A`;
+      mensaje += `*Datos del cliente:*%0ANombre: ${encodeURIComponent(nombre)}%0ATeléfono: ${encodeURIComponent(telefono)}%0ADirección: ${encodeURIComponent(direccion)}`;
+
+      // Número WhatsApp (pon tu número aquí, formato internacional sin + ni espacios)
+      const numeroWhatsApp = '+5352461405';
+
+      const url = `https://wa.me/${numeroWhatsApp}?text=${mensaje}`;
+
+      window.open(url, '_blank');
+    });
+
+  </script>
+<!-- Texto flotante de ayuda -->
+<div id="faq-float" title="Ver preguntas frecuentes">
+  💬 ¿Necesitas ayuda?
+</div>
+
+<!-- Caja de preguntas frecuentes -->
+<div id="faq-box">
+  <h3>Preguntas Frecuentes</h3>
+
+  <div class="faq-item">
+    <strong>¿Cómo hago un pedido?</strong>
+    <p>
+      1. Selecciona los productos que desees haciendo clic en el botón <strong>“Agregar al carrito”</strong> debajo de cada producto.<br>
+      2. Luego ve al <strong>ícono del carrito 🛒</strong> en la parte superior derecha de la página.<br>
+      3. Rellena tus datos en el formulario: nombre, dirección y número de teléfono.<br>
+      4. Presiona <strong>“Hacer pedido”</strong> y se enviará automáticamente por WhatsApp.<br><br>
+      ✅ <em>Fácil, rápido y directo desde El Cornito hasta tu casa.</em>
+    </p>
+  </div>
+
+  <div class="faq-item">
+    <strong>¿Cuánto cuesta el envío?</strong>
+    <p>El domicilio cuesta solo $50 desde El Cornito hasta la aldea o zonas cercanas.</p>
+  </div>
+
+  <div class="faq-item">
+    <strong>¿Qué horario tienen?</strong>
+    <p>Atendemos de 8:00 AM a 9:00 PM. Si escribes fuera de horario, te respondemos al siguiente día.</p>
+  </div>
+
+  <div class="faq-item">
+    <strong>¿Dónde están ubicados?</strong>
+    <p>📍 Calle Cuba #58 Entre 3 y 4 Reparto San Antonio El Cornito</p>
+  </div>
+</div>
+
+<style>
+  /* Texto flotante en vez de botón */
+  #faq-float {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    background-color: #444;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 20px;
+    font-size: 15px;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    animation: slideIn 1s ease;
+    transition: transform 0.3s ease;
+  }
+
+  #faq-float:hover {
+    transform: scale(1.05);
+  }
+
+  @keyframes slideIn {
+    0% { transform: translateY(40px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Caja de preguntas frecuentes */
+  #faq-box {
+    display: none;
+    opacity: 0;
+    position: fixed;
+    bottom: 140px;
+    right: 20px;
+    width: 310px;
+    max-height: 350px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 9998;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(20px);
+  }
+
+  #faq-box.mostrar {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  #faq-box h3 {
+    margin-top: 0;
+    font-size: 17px;
+    color: #444;
+    text-align: center;
+  }
+
+  .faq-item {
+    margin-bottom: 12px;
+  }
+
+  .faq-item strong {
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .faq-item p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #333;
+  }
+
+  /* Scroll bonito */
+  #faq-box::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  #faq-box::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 10px;
+  }
+
+  #faq-box::-webkit-scrollbar-track {
+    background: transparent;
+  }
+</style>
+
+<script>
+  const faqFloat = document.getElementById("faq-float");
+  const faqBox = document.getElementById("faq-box");
+
+  faqFloat.addEventListener("click", () => {
+    faqBox.classList.toggle("mostrar");
+  });
+
+  // Mostrar solo en la sección de productos
+  document.addEventListener("DOMContentLoaded", () => {
+    const seccionProductos = document.getElementById("productos"); // Cambia si usas otro ID
+    if (!seccionProductos) {
+      faqFloat.style.display = "none";
+      faqBox.style.display = "none";
+    }
+  });
+</script>
+
+  <footer style="background: rgba(0, 0, 0, 0.5); color: rgb(255, 255, 255); padding: 2rem 1rem; text-align: center; margin-top: 2rem;">
+  <div style="max-width: 1000px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2rem;">
+
+    <div style="flex: 1; min-width: 250px; text-align: left;">
+      <h3>Sobre Nosotros</h3>
+      <p>Tiendita El Cornito es tu tienda ideal para encontrar dulces, golosinas, refrescos, productos del hogar y mucho más. Nuestra misión es llevarte sabor, color y alegría a cada rincón del barrio con atención cercana y precios asequibles.</p>
+    </div>
+
+    <div style="flex: 1; min-width: 250px; text-align: left;">
+      <h3>Dirección y Contacto</h3>
+      <p>📍 Calle Cuba #58 Entre 3 y 4 Reparto San Antonio El Cornito</p>
+      <p>📞 Tel: +53 52461405</p>
+      <p>✉️ Email: eniomedina2003@gmail.com</p>
+      <p>
+        <a href="https://wa.me/+5352461405?text=Buenas%2C%20me%20interesa%20comprar" target="_blank" style="text-decoration: none; color: #25D366; font-weight: bold;">
+          💬 Escríbenos por WhatsApp
+        </a>
+      </p>
+    </div>
+
+  </div>
+  <div style="margin-top: 1.5rem; font-size: 0.9rem; opacity: 0.7;">
+    © 2025 Chucherías El Cornito. Todos los derechos reservados.
+  </div>
+</footer>
+ <script>
+    const filterLinks = document.querySelectorAll('.filter-link');
+   
+    let categoriaSeleccionada = 'todos';
+
+    filterLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        categoriaSeleccionada = link.getAttribute('data-category');
+        aplicarFiltros();
+      });
+    });
+
+    searchInput.addEventListener('input', () => {
+      aplicarFiltros();
+    });
+
+    function aplicarFiltros() {
+      const productos = document.querySelectorAll('.producto');
+      const texto = searchInput.value.toLowerCase();
+
+      productos.forEach(p => {
+        const nombre = p.getAttribute('data-name').toLowerCase();
+        const categoria = p.getAttribute('data-category');
+        const coincideTexto = nombre.includes(texto);
+        const coincideCategoria = categoriaSeleccionada === 'todos' || categoria === categoriaSeleccionada;
+        p.style.display = coincideTexto && coincideCategoria ? 'flex' : 'none';
+      });
+    }
+  </script>
+  <script>
+    function actualizarEstadoTienda() {
+      const ahora = new Date();
+      const hora = ahora.getHours();
+      const minutos = ahora.getMinutes();
+      const horaActual = hora + minutos / 60;
+  
+      const horaApertura = 8;   // 8:00 AM
+      const horaCierre = 21;    // 9:00 PM
+  
+      const estadoElemento = document.getElementById("estado-tienda");
+      const botones = document.querySelectorAll(".agregar-carrito");
+  
+      function formatoHora(h) {
+        const ampm = h >= 12 ? 'PM' : 'AM';
+        const hora12 = h % 12 || 12;
+        return `${hora12}:00 ${ampm}`;
+      }
+  
+      if (horaActual >= horaApertura && horaActual < horaCierre) {
+        // ABIERTO
+        estadoElemento.textContent = `🟢 ¡Estamos Abiertos! 🕗 Horario: ${formatoHora(horaApertura)} a ${formatoHora(horaCierre)}`;
+        estadoElemento.style.color = "#0a0";
+  
+        botones.forEach(btn => {
+          btn.disabled = false;
+          btn.style.opacity = "1";
+          btn.style.cursor = "pointer";
+          btn.textContent = "add-to-cart";
+          btn.style.display = "add-to-cart";  // Mostrar el botón
+        });
+  
+      } else {
+        // CERRADO
+        let mensajeAdicional = "";
+  
+        if (horaActual < horaApertura) {
+          const horasFaltan = Math.floor(horaApertura - horaActual);
+          const minutosFaltan = Math.floor((horaApertura - horaActual - horasFaltan) * 60);
+          mensajeAdicional = `Abrimos en ${horasFaltan}h ${minutosFaltan}min`;
+        } else {
+          mensajeAdicional = "Volvemos mañana";
+        }
+  
+        estadoElemento.textContent = `🔴 Cerrado por ahora 🕗 Horario: ${formatoHora(horaApertura)} a ${formatoHora(horaCierre)} — ${mensajeAdicional}`;
+        estadoElemento.style.color = "#c00";
+  
+        botones.forEach(btn => {
+          btn.disabled = true;
+          btn.style.display = "add-to-cart";  // Ocultar el botón
+        });
+      }
+    }
+  
+    actualizarEstadoTienda();
+    setInterval(actualizarEstadoTienda, 60000);
+  </script>
+  
+  
+</body>
+</html>
